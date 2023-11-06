@@ -13,12 +13,10 @@ class LoginPage(BasePage):
         self.should_be_login_form()
         self.should_be_register_form()
 
-
     def should_be_login_url(self):
         # реализуйте проверку на корректный url адрес
         url_text = self.driver.current_url
         assert "login" in url_text.lower(), "Oops! Incorrect login URL"
-
 
     def should_be_login_form(self):
         # реализуйте проверку, что есть форма логина

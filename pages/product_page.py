@@ -26,17 +26,15 @@ class ProductPage(BasePage):
         # except NoAlertPresentException:
         # print("No second alert presented")
 
-
     def book_path_correct(self, link):
         book_name = self.browser.find_element(*ProductPageLocator.BOOK_NAME)
         book_path = self.browser.find_element(*ProductPageLocator.BOOK_NAME_PATH)
-        assert book_name.text == book_path.text, f"The Book's name not right here! {link}"
+        assert book_name.text == book_path.text, f"Book's name not right here! {link}"
 
     def book_price_correct(self, link):
         book_price = self.browser.find_element(*ProductPageLocator.BOOK_PRICE)
         book_price_path = self.browser.find_element(*ProductPageLocator.BOOK_PRICE_PATH)
         assert book_price.text in book_price_path.text, f"Book's price not right here! {link}"
-
 
     def should_not_be_success_message(self):
         assert self.is_not_element_present(*ProductPageLocator.SUCCESS_MESSAGE), \

@@ -1,3 +1,7 @@
+from selenium.webdriver.common.by import By
+
+import time
+
 from .base_page import BasePage
 from .locators import LoginPageLocators
 from selenium.common.exceptions import NoSuchElementException
@@ -28,3 +32,19 @@ class LoginPage(BasePage):
             self.driver.find_element(*LoginPageLocators.REG_FORM)
         except NoSuchElementException:
             assert False, "No register form found"
+
+    def register_new_user(self, email, password):
+        adress = self.driver.find_element(By.ID, "id_registration-email")
+        adress.click()
+        adress.send_keys(email)
+        passw1 = self.driver.find_element(By.ID, "id_registration-password1")
+        passw1.click()
+        passw1.send_keys(password)
+        passw2 = self.driver.find_element(By.ID, "id_registration-password2")
+        passw2.click()
+        passw2.send_keys(password)
+        button = self.driver.find_element(By.XPATH, "/html/body/div[2]/div/div[2]/div[2]/div/div[2]/form/button")
+        button.click()
+
+
+

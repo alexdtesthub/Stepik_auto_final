@@ -1,5 +1,9 @@
-from .pages.product_page import ProductPage
+import faker
 import pytest
+
+from .pages.login_page import LoginPage
+from .pages.basket_page import BasketPage
+from .pages.product_page import ProductPage
 
 
 #ПОИСК_БАГА_В_СПИСКЕ_СТРАНИЦ:
@@ -88,3 +92,43 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     pages.open()
     pages.go_to_login_page()
     pages.should_be_login_link()
+
+
+#ПРОВЕРКА_КОРЗИНЫ
+def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
+    link = "http://selenium1py.pythonanywhere.com/ru/catalogue/the-city-and-the-stars_95/"
+    basket = BasketPage(browser, link)
+    basket.open()
+    basket.go_to_basket_page()
+    basket.basket_is_empty()
+    basket.empty_basket_have_text()
+
+
+@pytest.mark.setup_test
+class TestUserAddToBasketFromProductPage():
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self, browser):
+        link = "http://selenium1py.pythonanywhere.com"
+        pages = LoginPage(browser, link)
+        pages.open()
+        pages.go_to_login_page()
+        f = faker.Faker()
+        email = f.email()
+        password = f.password() + str(1234567890)
+        pages.register_new_user(email, password)
+        pages.should_be_authorized_user()
+        yield link
+
+    def test_user_cant_see_success_message(self, browser, setup):
+        link = setup
+        pages = ProductPage(browser, link)
+        pages.open()
+        pages.should_not_be_success_message()
+
+    def test_user_can_add_product_to_basket(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/"
+        pages = ProductPage(browser, link)
+        pages.open()
+        pages.add_button()
+        pages.book_path_correct(link)
+        pages.book_price_correct(link)

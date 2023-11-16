@@ -11,7 +11,7 @@ class BasketPage(BasePage):
         link = self.browser.find_element(*BasePageLocators.VIEW_BASKET)
         link.click()
 
-#Проверка
+
     def add_to_basket(self, timeout=10):
         WebDriverWait(self.browser, timeout).until(EC.presence_of_element_located((*BasePageLocators.BUTTON_ADD_T0_BASKET,)))
         link = self.browser.find_element(*BasePageLocators.BUTTON_ADD_T0_BASKET)
